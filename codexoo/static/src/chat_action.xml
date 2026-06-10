@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2026 CICDoo (https://cicdoo.com)
+     SPDX-License-Identifier: LGPL-3.0-or-later OR LicenseRef-Codexoo-Commercial
+     Dual-licensed: open source (LGPL-3, see LICENSE) or commercial (see COMMERCIAL_LICENSE.md). -->
+<templates xml:space="preserve">
+
+    <t t-name="codexoo.ChatAction">
+        <!-- Auth gate: shown until this user connects their ChatGPT account -->
+        <div t-if="state.authReady and !state.authenticated"
+             class="o_ai_auth d-flex flex-column align-items-center justify-content-center h-100 text-center p-4">
+            <div class="o_ai_auth_card p-4">
+                <i class="fa fa-robot fa-3x text-primary mb-3"/>
+                <h3 class="mb-2">Connect your ChatGPT account</h3>
+                <p class="text-muted mb-4">
+                    The AI Assistant runs on <b>your own</b> ChatGPT subscription
+                    via OpenAI Codex. Sign in once to start chatting.
+                </p>
+
+                <button t-if="state.authStep === 'idle'"
+                        class="btn btn-primary btn-lg"
+                        t-on-click="_startAuth">
+                    <i class="fa fa-sign-in me-2"/> Login with ChatGPT
+                </button>
+
+                <div t-if="state.authStep !== 'idle'" class="text-start">
+                    <p class="mb-2">
+                        1. A verification page should have opened
+                        (<a t-att-href="state.authUrl" target="_blank"
+                            rel="noopener noreferrer">open it again</a>).<br/>
+                        2. Enter this one-time code there, then come back —
+                        this gate clears automatically once you're signed in.
+                    </p>
+                    <div t-if="state.authDeviceCode"
+                         class="o_ai_device_code my-3 p-2 fs-3 fw-bold text-center border rounded"
+                         t-esc="state.authDeviceCode"/>
+                    <div t-if="!state.authDeviceCode and state.authRaw"
+                         class="alert alert-info text-start"
+                         style="white-space: pre-wrap;" t-esc="state.authRaw"/>
+                    <div class="d-flex align-items-center text-muted">
+                        <i class="fa fa-spinner fa-spin me-2"/> Waiting for you to
+                        authorize in your browser…
+                    </div>
+                    <button class="btn btn-link btn-sm p-0 mt-2" t-on-click="_startAuth">
+                        Restart the login
+                    </button>
+                </div>
+
+                <div t-if="state.authError" class="alert alert-danger mt-3 mb-0"
+                     t-esc="state.authError"/>
+            </div>
+        </div>
+
+        <!-- Chat (only once authenticated) -->
+        <div t-if="state.authenticated" class="o_ai_chat d-flex h-100">
+            <!-- Sidebar: conversation list -->
+            <div class="o_ai_sidebar d-flex flex-column border-end">
+                <div class="p-2 border-bottom">
+                    <button class="btn btn-primary w-100" t-on-click="_newSession">
+                        <i class="fa fa-plus me-1"/> New chat
+                    </button>
+                </div>
+                <div class="flex-grow-1 overflow-auto">
+                    <t t-foreach="state.sessions" t-as="s" t-key="s.id">
+                        <div t-attf-class="o_ai_session_item p-2 {{ s.id === state.currentId ? 'active' : '' }}"
+                             t-on-click="() => this._openSession(s.id)">
+                            <i class="fa fa-comment-o me-1"/>
+                            <span t-esc="s.name"/>
+                        </div>
+                    </t>
+                </div>
+            </div>
+
+            <!-- Main: messages + composer -->
+            <div class="o_ai_main d-flex flex-column flex-grow-1">
+                <AiMessageList messages="state.messages" running="state.running"/>
+                <div t-if="state.running" class="px-2 pb-1">
+                    <button class="btn btn-sm btn-link text-danger" t-on-click="onStop">
+                        <i class="fa fa-stop me-1"/> Stop
+                    </button>
+                </div>
+                <AiComposer onSend.bind="onSend" disabled="state.running"
+                            sessionId="state.currentId"/>
+            </div>
+        </div>
+    </t>
+
+</templates>
