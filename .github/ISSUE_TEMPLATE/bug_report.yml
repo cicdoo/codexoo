@@ -1,0 +1,40 @@
+name: Bug report
+description: Report a problem with Codexoo
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing a bug! Please do **not** report security vulnerabilities
+        here — see [SECURITY.md](../blob/main/SECURITY.md) instead.
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Codexoo version, Odoo version, OpenAI Codex CLI version, OS.
+      placeholder: "Codexoo 17.0.1.0.1, Odoo 17.0, Codex CLI 0.x, Ubuntu 24.04"
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the Codexoo chat
+        2. Ask "..."
+        3. See error
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Server log lines and/or the session's `last_error`. Redact secrets.
+      render: shell
