@@ -33,7 +33,7 @@ Requires the OpenAI Codex CLI installed on the server (set its path via the
     'category': 'Productivity/AI',
     'version': '17.0.1.0.1',
     'license': 'LGPL-3',
-    'depends': ['web', 'bus', 'mail'],
+    'depends': ['web', 'bus'],
     'data': [
         'security/codexoo_security.xml',
         'security/ir.model.access.csv',
