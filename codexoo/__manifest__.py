@@ -31,7 +31,7 @@ Requires the OpenAI Codex CLI installed on the server (set its path via the
     'author': "CICDoo",
     'website': "https://cicdoo.com",
     'category': 'Productivity/AI',
-    'version': '17.0.1.0.1',
+    'version': '17.0.1.0.2',
     'license': 'LGPL-3',
     'depends': ['web', 'bus'],
     'data': [

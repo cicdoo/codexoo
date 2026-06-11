@@ -4,6 +4,16 @@ All notable changes to **Codexoo** are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 Odoo-style versioning (`17.0.MAJOR.MINOR.PATCH`).
 
+## [17.0.1.0.2] — 2026-06-11
+
+### Added
+- **Max Concurrent Runs** setting (`codexoo.max_concurrent_runs`, under
+  *Settings → Codexoo AI Assistant*) — a soft global cap on how many CLI
+  subprocesses may run at once across all users, to bound peak memory and
+  protect the host from OOM. `0` = unlimited.
+
+[17.0.1.0.2]: https://github.com/cicdoo/codexoo/releases/tag/17.0.1.0.2
+
 ## [17.0.1.0.1] — First public release
 
 First open-source release of Codexoo, an in-Odoo AI assistant that drives the

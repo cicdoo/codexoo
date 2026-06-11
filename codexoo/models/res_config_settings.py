@@ -22,6 +22,12 @@ class ResConfigSettings(models.TransientModel):
     codexoo_timeout_s = fields.Integer(
         string="Run Timeout (s)", config_parameter="codexoo.timeout_s",
         default=900)
+    codexoo_max_concurrent_runs = fields.Integer(
+        string="Max Concurrent Runs",
+        config_parameter="codexoo.max_concurrent_runs", default=0,
+        help="Maximum number of AI runs allowed to execute at the same time "
+             "across all users. Each run is a separate CLI subprocess, so this "
+             "caps peak memory and protects the host from OOM. 0 = unlimited.")
     codexoo_scratch_root = fields.Char(
         string="Scratch Directory", config_parameter="codexoo.scratch_root",
         default="/var/lib/odoo/codexoo_scratch")

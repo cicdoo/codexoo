@@ -26,6 +26,10 @@
                         <setting string="Run Timeout (s)">
                             <field name="codexoo_timeout_s"/>
                         </setting>
+                        <setting string="Max Concurrent Runs"
+                                 help="Cap on AI runs executing at once across all users. Each run is a separate subprocess; this bounds peak memory. 0 = unlimited.">
+                            <field name="codexoo_max_concurrent_runs"/>
+                        </setting>
                         <setting string="Per-User Codex Home Root"
                                  help="Each user gets a private &lt;root&gt;/&lt;uid&gt;/.codex (CODEX_HOME) with their own credentials.">
                             <field name="codexoo_home_root"/>
