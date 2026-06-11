@@ -4,6 +4,14 @@ All notable changes to **Codexoo** are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 Odoo-style versioning (`17.0.MAJOR.MINOR.PATCH`).
 
+## [17.0.1.0.3] — 2026-06-11
+
+### Changed
+- **App icon** now uses the OpenAI logomark, reflecting the OpenAI Codex engine
+  that powers Codexoo.
+
+[17.0.1.0.3]: https://github.com/cicdoo/codexoo/releases/tag/17.0.1.0.3
+
 ## [17.0.1.0.2] — 2026-06-11
 
 ### Added
