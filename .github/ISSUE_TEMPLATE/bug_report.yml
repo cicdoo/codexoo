@@ -12,7 +12,7 @@ body:
     attributes:
       label: Versions
       description: Codexoo version, Odoo version, OpenAI Codex CLI version, OS.
-      placeholder: "Codexoo 17.0.1.0.1, Odoo 17.0, Codex CLI 0.x, Ubuntu 24.04"
+      placeholder: "Codexoo 18.0.1.0.0, Odoo 18.0, Codex CLI 0.x, Ubuntu 24.04"
     validations:
       required: true
   - type: textarea
