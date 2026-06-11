@@ -2,7 +2,7 @@
 
 All notable changes to **Codexoo** are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
-Odoo-style versioning (`MAJOR.0.x.y.z`, tracking the Odoo series).
+Odoo-style versioning (`<odoo-series>.MAJOR.MINOR.PATCH`, e.g. `18.0.1.0.0`).
 
 ## [18.0.1.0.0] — 2026-06-11
 
@@ -18,6 +18,8 @@ Odoo-style versioning (`MAJOR.0.x.y.z`, tracking the Odoo series).
   - The audit-log view uses `<list>` / `view_mode="list,form"` instead of
     `<tree>` / `view_mode="tree,form"`.
 
+[18.0.1.0.0]: https://github.com/cicdoo/codexoo/releases/tag/18.0.1.0.0
+
 ## [17.0.1.0.2] — 2026-06-11
 
 ### Added
@@ -25,6 +27,10 @@ Odoo-style versioning (`MAJOR.0.x.y.z`, tracking the Odoo series).
   *Settings → Codexoo AI Assistant*) — a soft global cap on how many CLI
   subprocesses may run at once across all users, to bound peak memory and
   protect the host from OOM. `0` = unlimited.
+
+### Changed
+- **Dropped the unused `mail` dependency** — the addon drives `web` and `bus`
+  directly and never used any `mail` feature; `depends` is now `['web', 'bus']`.
 
 [17.0.1.0.2]: https://github.com/cicdoo/codexoo/releases/tag/17.0.1.0.2
 

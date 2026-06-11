@@ -11,8 +11,8 @@
 
 ## Checklist
 
-- [ ] Targets Odoo 17.0 and follows the existing code style
-- [ ] Added/updated tests under `tests/` (tagged `codexoo`); CI is green
+- [ ] Targets Odoo 18.0 and follows the existing code style
+- [ ] Added/updated tests under `tests/` (tagged `codexoo`) and they pass locally
 - [ ] Updated `CHANGELOG.md`
 - [ ] Tool endpoints still run **as the user, never superuser**
 - [ ] Did not alter Codex engine references (ChatGPT/device-code login, `CODEX_HOME`,

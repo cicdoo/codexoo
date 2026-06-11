@@ -15,8 +15,7 @@ queries your data, and builds reports — running as the logged-in user, never a
 superuser, with a full audit trail.**
 
 [![License: LGPL-3.0](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](LICENSE)
-[![Odoo](https://img.shields.io/badge/Odoo-17.0-714B67.svg)](https://www.odoo.com)
-[![CI](https://github.com/cicdoo/codexoo/actions/workflows/ci.yml/badge.svg)](https://github.com/cicdoo/codexoo/actions/workflows/ci.yml)
+[![Odoo](https://img.shields.io/badge/Odoo-18.0-714B67.svg)](https://www.odoo.com)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 [Quick start](#-quick-start) · [Security model](#-security-model) ·
@@ -77,7 +76,7 @@ OWL chat UI ──/codexoo/send (auth=user)──► Odoo worker ──► daemo
 
 ### Requirements
 
-- **Odoo 17.0**
+- **Odoo 18.0**
 - The **[OpenAI Codex CLI](https://github.com/openai/codex)** installed on the Odoo
   server (set its path via the `codexoo.cli_path` / `codexoo.cli_glob` system
   parameter; auto-detected if blank).
