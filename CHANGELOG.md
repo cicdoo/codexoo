@@ -2,7 +2,21 @@
 
 All notable changes to **Codexoo** are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
-Odoo-style versioning (`17.0.MAJOR.MINOR.PATCH`).
+Odoo-style versioning (`MAJOR.0.x.y.z`, tracking the Odoo series).
+
+## [18.0.1.0.0] — 2026-06-11
+
+### Changed
+- **Ported to Odoo 18.0.** Functionally identical to `17.0.1.0.2`; only the
+  framework APIs that changed between Odoo 17 and 18 were updated:
+  - Controllers use the unified `check_access()` / `has_access()` instead of the
+    split `check_access_rights()` + `check_access_rule()`.
+  - Bus streaming uses the record-level `partner._bus_send()` instead of
+    `bus.bus._sendone()`.
+  - The chat client action imports `rpc` from `@web/core/network/rpc` (the `rpc`
+    service was removed in 18) instead of `useService("rpc")`.
+  - The audit-log view uses `<list>` / `view_mode="list,form"` instead of
+    `<tree>` / `view_mode="tree,form"`.
 
 ## [17.0.1.0.2] — 2026-06-11
 

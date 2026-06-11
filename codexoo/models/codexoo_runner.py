@@ -19,7 +19,7 @@ from .codexoo_session import WEB_TOOLS
 _logger = logging.getLogger(__name__)
 
 SYSTEM_PROMPT = (
-    "You are an AI assistant embedded inside an Odoo 17 ERP system. "
+    "You are an AI assistant embedded inside an Odoo 18 ERP system. "
     "You help the current Odoo user query data and build reports. "
     "You act through the Odoo tools provided by the `odoo` MCP server (model_introspect, "
     "orm_search_read, orm_read, orm_call, sql_select, and — when granted — orm_create/"
@@ -400,10 +400,9 @@ class AiAssistantRunner(models.AbstractModel):
     # ------------------------------------------------------------------
     def _emit(self, session, payload):
         payload = dict(payload, session_id=session.id)
-        # Odoo 17 has no record-level _bus_send; push to the user's partner
-        # channel via bus.bus._sendone (frontend filters by the "codexoo" type).
-        self.env["bus.bus"]._sendone(
-            session.user_id.partner_id, "codexoo", payload)
+        # Push to the user's partner channel via the record-level _bus_send
+        # (bus.listener.mixin); the frontend filters by the "codexoo" type.
+        session.user_id.partner_id._bus_send("codexoo", payload)
 
     def _emit_message(self, session, rec):
         self._emit(session, {

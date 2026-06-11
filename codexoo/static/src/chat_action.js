@@ -6,6 +6,7 @@ import { Component, useState, onWillStart, onWillUnmount } from "@odoo/owl";
 import { browser } from "@web/core/browser/browser";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
+import { rpc } from "@web/core/network/rpc";
 import { AiMessageList } from "./components/message_list";
 import { AiComposer } from "./components/composer";
 
@@ -17,8 +18,6 @@ export class AiChatAction extends Component {
     setup() {
         this.aiBus = useService("codexoo");
         this.notification = useService("notification");
-        // Odoo 17 exposes RPC as a service (no standalone @web/core/network/rpc).
-        this.rpc = useService("rpc");
         this.state = useState({
             sessions: [],
             currentId: null,
@@ -36,7 +35,7 @@ export class AiChatAction extends Component {
         this._authPoll = null;
 
         onWillStart(async () => {
-            const { authenticated } = await this.rpc("/codexoo/auth/status");
+            const { authenticated } = await rpc("/codexoo/auth/status");
             this.state.authenticated = authenticated;
             this.state.authReady = true;
             if (authenticated) {
@@ -58,7 +57,7 @@ export class AiChatAction extends Component {
     async _startAuth() {
         this.state.authError = "";
         try {
-            const res = await this.rpc("/codexoo/auth/start");
+            const res = await rpc("/codexoo/auth/start");
             if (res.authenticated) {
                 await this._onAuthenticated();
                 return;
@@ -85,7 +84,7 @@ export class AiChatAction extends Component {
         this._stopAuthPoll();
         this._authPoll = browser.setInterval(async () => {
             try {
-                const { authenticated } = await this.rpc("/codexoo/auth/status");
+                const { authenticated } = await rpc("/codexoo/auth/status");
                 if (authenticated) {
                     this._stopAuthPoll();
                     await this._onAuthenticated();
@@ -121,11 +120,11 @@ export class AiChatAction extends Component {
     }
 
     async _loadSessions() {
-        this.state.sessions = await this.rpc("/codexoo/sessions");
+        this.state.sessions = await rpc("/codexoo/sessions");
     }
 
     async _newSession() {
-        const s = await this.rpc("/codexoo/new");
+        const s = await rpc("/codexoo/new");
         this.state.sessions.unshift(s);
         await this._openSession(s.id);
     }
@@ -136,7 +135,7 @@ export class AiChatAction extends Component {
         }
         this.state.currentId = id;
         this.aiBus.register(id, (p) => this._onBusEvent(p));
-        const data = await this.rpc("/codexoo/messages", { session_id: id });
+        const data = await rpc("/codexoo/messages", { session_id: id });
         this.state.messages = data.messages;
         this.state.running = data.state === "running";
     }
@@ -176,7 +175,7 @@ export class AiChatAction extends Component {
 
     async _reload() {
         if (!this.state.currentId) return;
-        const data = await this.rpc("/codexoo/messages", {
+        const data = await rpc("/codexoo/messages", {
             session_id: this.state.currentId,
         });
         this.state.messages = data.messages;
@@ -193,7 +192,7 @@ export class AiChatAction extends Component {
         });
         this.state.running = true;
         try {
-            await this.rpc("/codexoo/send", {
+            await rpc("/codexoo/send", {
                 session_id: this.state.currentId,
                 body: text,
                 attachment_ids: files.map((f) => f.id),
@@ -207,7 +206,7 @@ export class AiChatAction extends Component {
     }
 
     async onStop() {
-        await this.rpc("/codexoo/stop", { session_id: this.state.currentId });
+        await rpc("/codexoo/stop", { session_id: this.state.currentId });
         this.state.running = false;
     }
 }

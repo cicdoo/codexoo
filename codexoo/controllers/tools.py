@@ -103,14 +103,11 @@ class AiAssistantTools(http.Controller):
     def _check_access(records, operation):
         """Enforce model ACLs and (for a concrete recordset) record rules.
 
-        Odoo 17 splits the unified ``check_access`` of newer versions into
-        ``check_access_rights`` (model-level ACL) and ``check_access_rule``
-        (record rules). Both raise AccessError on denial. ``records`` may be an
-        empty recordset standing in for the bare model, in which case only the
-        ACL is checked (there are no records to evaluate rules against)."""
-        records.check_access_rights(operation)
-        if records.ids:
-            records.check_access_rule(operation)
+        Odoo 18 unifies model-level ACLs and record rules into a single
+        ``check_access`` call (which raises AccessError on denial). ``records``
+        may be an empty recordset standing in for the bare model, in which case
+        only the ACL applies (there are no records to evaluate rules against)."""
+        records.check_access(operation)
 
     def _check_action_method(self, method):
         """Gate a business/action method: block private/dunder unconditionally,
@@ -212,7 +209,7 @@ class AiAssistantTools(http.Controller):
             fg = Model.fields_get(attributes=[
                 "string", "type", "required", "relation", "readonly",
                 "selection", "help"])
-            access = {op: Model.check_access_rights(op, raise_exception=False)
+            access = {op: Model.has_access(op)
                       for op in ("read", "write", "create", "unlink")}
             # AND the raw Odoo ACL with whether the matching AI tool is enabled,
             # so the model only attempts actions it can actually perform here.
