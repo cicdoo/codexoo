@@ -31,7 +31,13 @@ _LOGIN_CAPTURE_S = 15
 # stdout. The exact wording is Codex-version dependent (plan item C3); these are
 # deliberately loose and we also return the raw text as a fallback.
 _URL_RE = re.compile(r"https://\S*device\S*", re.IGNORECASE)
-_CODE_RE = re.compile(r"\b([A-Z0-9]{4}-[A-Z0-9]{4})\b")
+# Codex device codes vary in length (e.g. the 4-then-5 "IL70-LNADU"); accept any
+# reasonable XXXX-XXXX grouping rather than a fixed 4-4 so the code is extracted
+# (which also lets the capture loop exit early instead of stalling the full 15s).
+_CODE_RE = re.compile(r"\b([A-Z0-9]{3,8}-[A-Z0-9]{3,8})\b")
+# Strip ANSI color/format escapes the CLI emits, so the captured URL/code regexes
+# match cleanly and any raw fallback shown in the UI is plain text.
+_ANSI_RE = re.compile(r"\x1b\[[0-9;]*[A-Za-z]")
 
 
 class ResUsers(models.Model):
@@ -259,6 +265,7 @@ class ResUsers(models.Model):
             _LOGIN_PID % self.id, str(proc.pid))
 
         raw = self._codexoo_capture_login(proc, _LOGIN_CAPTURE_S)
+        raw = _ANSI_RE.sub("", raw)
         url_m = _URL_RE.search(raw)
         url = url_m.group(0) if url_m else ""
         m = _CODE_RE.search(raw)
@@ -299,7 +306,10 @@ class ResUsers(models.Model):
             if ln is None:
                 break
             buf.append(ln)
-            text = "".join(buf)
+            # Strip ANSI before matching: the CLI wraps the code in color escapes
+            # (e.g. "\x1b[94mIL70-LNADU\x1b[0m") whose trailing "m" would otherwise
+            # defeat the \b boundary and prevent the early exit, stalling the run.
+            text = _ANSI_RE.sub("", "".join(buf))
             # Stop early once we have both a device URL and a code.
             if _URL_RE.search(text) and _CODE_RE.search(text):
                 break

@@ -8,3 +8,4 @@ from . import test_tool_access
 from . import test_runner_web
 from . import test_tool_log
 from . import test_ir_http_auth
+from . import test_login_parse
