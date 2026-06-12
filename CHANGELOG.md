@@ -7,6 +7,13 @@ Odoo-style versioning (`17.0.MAJOR.MINOR.PATCH`). Add new entries under
 
 ## [Unreleased]
 
+### Fixed
+- **ChatGPT device-code login** — extract the current Codex CLI code format
+  (4-then-5, e.g. `IL70-LNADU`) and strip ANSI escapes from the captured output.
+  The old 4-4 pattern missed the code, which both stalled the verification page
+  by the full capture timeout and leaked raw `[90m…` ANSI text into the login
+  gate.
+
 ### Added
 - **Contribution gates** — a `pr-checks` CI workflow (CHANGELOG, DCO sign-off,
   SECURITY.md-when-relevant, flake8) plus branch protection, and `CONTRIBUTING.md`
