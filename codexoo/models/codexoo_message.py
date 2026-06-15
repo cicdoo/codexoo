@@ -2,7 +2,7 @@
 # Copyright 2026 CICDoo (https://cicdoo.com)
 # SPDX-License-Identifier: LGPL-3.0-or-later OR LicenseRef-Codexoo-Commercial
 # Dual-licensed: open source (LGPL-3, see LICENSE) or commercial (see COMMERCIAL_LICENSE.md).
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class AiAssistantMessage(models.Model):
@@ -14,7 +14,7 @@ class AiAssistantMessage(models.Model):
         "codexoo.session", required=True, ondelete="cascade", index=True)
     role = fields.Selection(
         [("user", "User"), ("assistant", "Assistant"),
-         ("tool", "Tool"), ("error", "Error")],
+         ("tool", "Tool"), ("report", "Report"), ("error", "Error")],
         required=True, default="assistant")
     body = fields.Text()
     # List of {id, name, input, result, status} dicts for tool-call chips.
