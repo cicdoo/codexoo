@@ -168,7 +168,7 @@ export class AiChatAction extends Component {
         const blob = new Blob([this.state.artifact], { type: "text/html" });
         const url = URL.createObjectURL(blob);
         browser.open(url, "_blank", "noopener,noreferrer");
-        setTimeout(() => URL.revokeObjectURL(url), 60000);
+        browser.setTimeout(() => URL.revokeObjectURL(url), 60000);
     }
 
     // The HTML to show for a message, or null if it carries none.
