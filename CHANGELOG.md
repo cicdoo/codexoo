@@ -7,6 +7,22 @@ entries under `## [Unreleased]`; a maintainer assigns the version at release tim
 
 ## [Unreleased]
 
+### Added
+- **Rendered charts & HTML reports in chat** — the assistant can now produce
+  visual output instead of raw markup. HTML emitted in a fenced ` ```html `
+  block (or an untagged fence whose content is HTML) renders as a CSS/SVG chart
+  or report inside a **sandboxed iframe** (`sandbox="allow-same-origin"`, no
+  scripts — styles are isolated and the markup's own JS never runs). Rendered
+  output opens in a dedicated **artifact panel on the right**, with the latest
+  chart auto-opening and inline "Chart" cards to reopen any previous one. A new
+  `report` message role plus a `codexoo.session._post_report(html)` helper let
+  server-side code push a full report straight into the conversation.
+
+### Changed
+- **Tool calls are collapsed by default** in each assistant message, behind a
+  toggle that shows the call count (and a spinner while any call is still
+  running); expand to see the per-tool chips.
+
 ### Fixed
 - **ChatGPT device-code login** — extract the current Codex CLI code format
   (4-then-5, e.g. `IL70-LNADU`) and strip ANSI escapes from the captured output.
